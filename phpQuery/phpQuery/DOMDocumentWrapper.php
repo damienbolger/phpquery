@@ -44,15 +44,16 @@ class DOMDocumentWrapper {
 	public $isXHTML = false;
 	public $isHTML = false;
 	public $charset;
-	public function __construct($markup = null, $contentType = null, $newDocumentID = null) {
+	public function __construct($markup = null, $contentType = '', $newDocumentID = null) {
 		if (isset($markup))
 			$this->load($markup, $contentType, $newDocumentID);
 		$this->id = $newDocumentID
 			? $newDocumentID
 			: md5(microtime());
 	}
-	public function load($markup, $contentType = null, $newDocumentID = null) {
+	public function load($markup, $contentType = '', $newDocumentID = null) {
 //		phpQuery::$documents[$id] = $this;
+        $contentType = $contentType ?: '';
 		$this->contentType = strtolower($contentType);
 		if ($markup instanceof DOMDOCUMENT) {
 			$this->document = $markup;
@@ -130,7 +131,8 @@ class DOMDocumentWrapper {
 		$this->document->formatOutput = true;
 		$this->document->preserveWhiteSpace = true;
 	}
-	protected function loadMarkupHTML($markup, $requestedCharset = null) {
+	protected function loadMarkupHTML($markup, $requestedCharset = '') {
+        $requestedCharset = $requestedCharset ?: '';
 		if (phpQuery::$debug)
 			phpQuery::debug('Full markup load (HTML): '.substr($markup, 0, 250));
 		$this->loadMarkupReset();
@@ -152,7 +154,7 @@ class DOMDocumentWrapper {
 		// @see http://www.w3.org/International/O-HTTP-charset
 		if (! $documentCharset) {
 			$documentCharset = 'ISO-8859-1';
-			$addDocumentCharset = true;	
+			$addDocumentCharset = true;
 		}
 		// Should be careful here, still need 'magic encoding detection' since lots of pages have other 'default encoding'
 		// Worse, some pages can have mixed encodings... we'll try not to worry about that
@@ -442,7 +444,7 @@ class DOMDocumentWrapper {
 //					if ($fake === false)
 //						throw new Exception("Error loading documentFragment markup");
 //					else
-//						$return = array_merge($return, 
+//						$return = array_merge($return,
 //							$this->import($fake->root->childNodes)
 //						);
 //				} else {
