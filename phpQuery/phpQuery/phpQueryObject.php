@@ -1673,7 +1673,7 @@ class phpQueryObject
 	public function length() {
 		return $this->size();
 	}
-	public function count() {
+	public function count() : int {
 		return $this->size();
 	}
 	/**
@@ -1885,7 +1885,7 @@ class phpQueryObject
 	}
 	/**
 	 * Enter description here...
-	 * 
+	 *
 	 * @param $code
 	 * @return unknown_type
 	 */
@@ -1896,7 +1896,7 @@ class phpQueryObject
 	}
 	/**
 	 * Enter description here...
-	 * 
+	 *
 	 * @param $code
 	 * @return unknown_type
 	 */
@@ -2926,7 +2926,7 @@ class phpQueryObject
 	}
 	/**
 	 * Enter description here...
-	 * 
+	 *
 	 * @param <type> $key
 	 * @param <type> $value
 	 */
@@ -2943,7 +2943,7 @@ class phpQueryObject
 	}
 	/**
 	 * Enter description here...
-	 * 
+	 *
 	 * @param <type> $key
 	 */
 	public function removeData($key) {
@@ -2957,7 +2957,7 @@ class phpQueryObject
 	/**
    * @access private
 	 */
-	public function rewind(){
+	public function rewind() : void {
 		$this->debug('iterating foreach');
 //		phpQuery::selectDocument($this->getDocumentID());
 		$this->elementsBackup = $this->elements;
@@ -2972,13 +2972,13 @@ class phpQueryObject
 	/**
    * @access private
 	 */
-	public function current(){
+	public function current(): mixed {
 		return $this->elementsInterator[ $this->current ];
 	}
 	/**
    * @access private
 	 */
-	public function key(){
+	public function key(): mixed {
 		return $this->current;
 	}
 	/**
@@ -2992,7 +2992,7 @@ class phpQueryObject
 	 * @see phpQueryObject::_next()
 	 * @return phpQueryObject|QueryTemplatesSource|QueryTemplatesParse|QueryTemplatesSourceQuery
 	 */
-	public function next($cssSelector = null){
+	public function next($cssSelector = null): void {
 //		if ($cssSelector || $this->valid)
 //			return $this->_next($cssSelector);
 		$this->valid = isset( $this->elementsInterator[ $this->current+1 ] )
@@ -3003,13 +3003,13 @@ class phpQueryObject
 		} else if ($this->valid) {
 			$this->current++;
 		} else {
-			return $this->_next($cssSelector);
+			$this->_next($cssSelector);
 		}
 	}
 	/**
    * @access private
 	 */
-	public function valid(){
+	public function valid(): bool {
 		return $this->valid;
 	}
 	// ITERATOR INTERFACE END
@@ -3017,26 +3017,26 @@ class phpQueryObject
 	/**
    * @access private
 	 */
-	public function offsetExists($offset) {
+	public function offsetExists($offset) : bool {
 		return $this->find($offset)->size() > 0;
 	}
 	/**
    * @access private
 	 */
-	public function offsetGet($offset) {
+	public function offsetGet($offset) : mixed {
 		return $this->find($offset);
 	}
 	/**
    * @access private
 	 */
-	public function offsetSet($offset, $value) {
+	public function offsetSet(mixed $offset, mixed $value): void {
 //		$this->find($offset)->replaceWith($value);
 		$this->find($offset)->html($value);
 	}
 	/**
    * @access private
 	 */
-	public function offsetUnset($offset) {
+	public function offsetUnset(mixed $offset): void {
 		// empty
 		throw new Exception("Can't do unset, use array interface only for calling queries and replacing HTML.");
 	}
